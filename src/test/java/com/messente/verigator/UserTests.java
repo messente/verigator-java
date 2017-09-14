@@ -1,0 +1,179 @@
+package com.messente.verigator;
+
+import com.messente.verigator.exceptions.NoSuchResourceException;
+import com.messente.verigator.exceptions.ResourceForbiddenException;
+import com.messente.verigator.exceptions.VerigatorException;
+import com.messente.verigator.serializers.AuthenticationResponse;
+import com.messente.verigator.serializers.VerificationResponse;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import static org.mockserver.model.HttpRequest.request;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockserver.model.HttpResponse.response;
+
+public class UserTests extends VerigatorTestCase {
+    private final String testServiceId = "serviceId";
+    private final String testUserId = "userId";
+    private final String mockPin = "1111";
+    private final String mockAuthId = "mock-auth-id";
+
+    @Test
+    public void testAuthSMSSuccess() throws IOException, VerigatorException {
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+
+        mockServer.
+                when(
+                        request().
+                                withMethod("POST").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("{\"method\": \"sms\", \"auth_id\": \"sms-auth-id\"}").
+                                withStatusCode(200)
+
+                );
+
+        AuthenticationResponse authenticationResponse = user.authenticateUsingSMS();
+        assertEquals(authenticationResponse.getMethod(), "sms");
+        assertEquals(authenticationResponse.getAuthId(), "sms-auth-id");
+    }
+
+    @Test
+    public void testAuthTotpSuccess() throws IOException, VerigatorException {
+        String testServiceId = "serviceId";
+        String testUserId = "userId";
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+
+        mockServer.
+                when(
+                        request().
+                                withMethod("POST").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("{\"method\": \"totp\", \"auth_id\": null}").
+                                withStatusCode(200)
+
+                );
+
+        AuthenticationResponse authenticationResponse = user.authenticateUsingSMS();
+        assertEquals(authenticationResponse.getMethod(), "totp");
+        assertEquals(authenticationResponse.getAuthId(), null);
+    }
+
+    @Rule
+    public ExpectedException testNotFound = ExpectedException.none();
+    @Test
+    public void testAuthResourceNotFound() throws IOException, VerigatorException {
+        testNotFound.expect(NoSuchResourceException.class);
+
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+
+        mockServer.
+                when(
+                        request().
+                                withMethod("POST").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response().
+                                withStatusCode(404)
+                );
+        user.authenticateUsingTotp();
+    }
+
+    @Rule
+    public ExpectedException testAuthVerifyForbidden = ExpectedException.none();
+    @Test
+    public void testAuthResourceForbidden() throws IOException, VerigatorException {
+        testAuthVerifyForbidden.expect(ResourceForbiddenException.class);
+        mockServer.
+                when(
+                    request().
+                        withMethod("POST").
+                        withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
+                        withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("").
+                                withStatusCode(403)
+                );
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+        user.authenticateUsingTotp();
+    }
+
+    @Test
+    public void testVerifyTotpSuccessVerified() throws IOException, VerigatorException {
+        mockServer.
+                when(
+                        request().
+                                withMethod("PUT").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("{\"method\": \"totp\", \"verified\": true}").
+                                withStatusCode(200)
+                );
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+        VerificationResponse verificationResponse = user.verifyPinTotp(mockPin);
+        assertEquals(verificationResponse.isVerified(), true);
+        assertEquals(verificationResponse.getMethod(), "totp");
+    }
+
+    @Test
+    public void testVerifySuccessFailed() throws IOException, VerigatorException {
+
+        String mockPin = "1111";
+        mockServer.
+                when(
+                        request().
+                                withMethod("PUT").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("{\"method\": \"totp\", \"verified\": false}").
+                                withStatusCode(200)
+                );
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+        VerificationResponse verificationResponse = user.verifyPinTotp(mockPin);
+        assertEquals(verificationResponse.isVerified(), false);
+        assertEquals(verificationResponse.getMethod(), "totp");
+    }
+
+    @Rule
+    public ExpectedException testVerifyForbidden = ExpectedException.none();
+    @Test
+    public void setTestVerifyForbidden() throws IOException, VerigatorException {
+        testVerifyForbidden.expect(ResourceForbiddenException.class);
+        mockServer.
+                when(
+                        request().
+                                withMethod("PUT").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("").
+                                withStatusCode(403)
+                );
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+        user.verifyPinTotp(mockPin);
+    }
+}
