@@ -11,8 +11,6 @@ import org.junit.rules.ExpectedException;
 
 import static org.mockserver.model.HttpRequest.request;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -23,7 +21,7 @@ public class UserTests extends VerigatorTestCase {
     private final String mockAuthId = "mock-auth-id";
 
     @Test
-    public void testAuthSMSSuccess() throws IOException, VerigatorException {
+    public void testAuthSMSSuccess() throws VerigatorException {
         Service service = new Service(testServiceId, getVerigatorTestClient());
         User user = new User(service, testUserId);
 
@@ -46,7 +44,7 @@ public class UserTests extends VerigatorTestCase {
     }
 
     @Test
-    public void testAuthTotpSuccess() throws IOException, VerigatorException {
+    public void testAuthTotpSuccess() throws VerigatorException {
         String testServiceId = "serviceId";
         String testUserId = "userId";
         Service service = new Service(testServiceId, getVerigatorTestClient());
@@ -73,7 +71,7 @@ public class UserTests extends VerigatorTestCase {
     @Rule
     public ExpectedException testNotFound = ExpectedException.none();
     @Test
-    public void testAuthResourceNotFound() throws IOException, VerigatorException {
+    public void testAuthResourceNotFound() throws VerigatorException {
         testNotFound.expect(NoSuchResourceException.class);
 
         Service service = new Service(testServiceId, getVerigatorTestClient());
@@ -96,7 +94,7 @@ public class UserTests extends VerigatorTestCase {
     @Rule
     public ExpectedException testAuthVerifyForbidden = ExpectedException.none();
     @Test
-    public void testAuthResourceForbidden() throws IOException, VerigatorException {
+    public void testAuthResourceForbidden() throws VerigatorException {
         testAuthVerifyForbidden.expect(ResourceForbiddenException.class);
         mockServer.
                 when(
@@ -115,7 +113,7 @@ public class UserTests extends VerigatorTestCase {
     }
 
     @Test
-    public void testVerifyTotpSuccessVerified() throws IOException, VerigatorException {
+    public void testVerifyTotpSuccessVerified() throws VerigatorException {
         mockServer.
                 when(
                         request().
@@ -135,7 +133,7 @@ public class UserTests extends VerigatorTestCase {
     }
 
     @Test
-    public void testVerifySuccessFailed() throws IOException, VerigatorException {
+    public void testVerifySuccessFailed() throws VerigatorException {
 
         String mockPin = "1111";
         mockServer.
@@ -159,7 +157,7 @@ public class UserTests extends VerigatorTestCase {
     @Rule
     public ExpectedException testVerifyForbidden = ExpectedException.none();
     @Test
-    public void setTestVerifyForbidden() throws IOException, VerigatorException {
+    public void setTestVerifyForbidden() throws VerigatorException {
         testVerifyForbidden.expect(ResourceForbiddenException.class);
         mockServer.
                 when(

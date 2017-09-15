@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockserver.model.HttpRequest.request;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 import static org.mockserver.model.HttpResponse.response;
@@ -21,15 +20,16 @@ public class ServiceTests extends VerigatorTestCase {
     private String testPhoneNumber = "+372555555";
     private String username = "test@example.com";
 
-    public static void main(String[] args) throws IOException, VerigatorException{
+    public static void main(String[] args) throws VerigatorException{
+
 
         Verigator verigator = new Verigator("api_user_1", "api_pass_1");
         Service service = verigator.createService("Some service 20w0", "www.example.com");
         User user = service.registerUser("ukuloskit@gmail.com", "+37253448365");
-        for (User serviceUser: service.getUsers()) {
-            System.out.println(serviceUser);
-        }
-//        AuthenticationResponse authenticationResponse = user.authenticateUsingSMS();
+//        for (User serviceUser: service.getUsers()) {
+//            System.out.println(serviceUser);
+//        }
+        AuthenticationResponse authenticationResponse = user.authenticateUsingSMS();
 
 //        Scanner reader = new Scanner(System.in);  // Reading from System.in
 //        System.out.println("Enter the PIN: ");
@@ -41,7 +41,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Test
-    public void testListUsersSuccess() throws IOException, VerigatorException {
+    public void testListUsersSuccess() throws VerigatorException {
         String successId = "success-id";
 
         mockServer.
@@ -77,7 +77,7 @@ public class ServiceTests extends VerigatorTestCase {
     @Rule
     public ExpectedException listUsersNotFound = ExpectedException.none();
     @Test
-    public void testListUsersServiceNotFound() throws IOException, VerigatorException {
+    public void testListUsersServiceNotFound() throws VerigatorException {
         listUsersNotFound.expect(NoSuchResourceException.class);
         String wrongId = "wrong-id";
         mockServer.
@@ -98,7 +98,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Test
-    public void testListUsersServiceEmptyUsers() throws IOException, VerigatorException {
+    public void testListUsersServiceEmptyUsers() throws VerigatorException {
         String successId = "success-id";
 
         mockServer.
@@ -121,7 +121,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Test
-    public void testRegisterUserSuccess() throws IOException, VerigatorException {
+    public void testRegisterUserSuccess() throws VerigatorException {
         String successId = "success-id";
 
         mockServer.
@@ -148,7 +148,7 @@ public class ServiceTests extends VerigatorTestCase {
     @Rule
     public ExpectedException registerUserInvalidData = ExpectedException.none();
     @Test
-    public void testRegisterUserInvalidData() throws IOException, VerigatorException {
+    public void testRegisterUserInvalidData() throws VerigatorException {
         registerUserInvalidData.expect(InvalidDataException.class);
         String successId = "success-id";
 
@@ -172,7 +172,7 @@ public class ServiceTests extends VerigatorTestCase {
     @Rule
     public ExpectedException registerUserNotFound = ExpectedException.none();
     @Test
-    public void testRegisterUserServiceNotFound() throws IOException, VerigatorException {
+    public void testRegisterUserServiceNotFound() throws VerigatorException {
         registerUserForbidden.expect(NoSuchResourceException.class);
         String successId = "success-id";
 
@@ -196,7 +196,7 @@ public class ServiceTests extends VerigatorTestCase {
     @Rule
     public ExpectedException registerUserForbidden = ExpectedException.none();
     @Test
-    public void testRegisterUserForbidden() throws IOException, VerigatorException {
+    public void testRegisterUserForbidden() throws VerigatorException {
         registerUserForbidden.expect(ResourceForbiddenException.class);
         String serviceId = "success-id";
         mockServer.
@@ -219,7 +219,7 @@ public class ServiceTests extends VerigatorTestCase {
     @Rule
     public ExpectedException registerUserAlreadyExists = ExpectedException.none();
     @Test
-    public void testtRegisterUserAlreadyExists() throws IOException, VerigatorException {
+    public void testtRegisterUserAlreadyExists() throws VerigatorException {
         registerUserAlreadyExists.expect(ResourceAlreadyExists.class);
         String serviceId = "success-id";
         mockServer.
@@ -240,7 +240,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Test
-    public void testDeleteServiceSuccess() throws IOException, VerigatorException {
+    public void testDeleteServiceSuccess() throws VerigatorException {
         String successId = "success-id";
         mockServer.
                 when(
@@ -261,7 +261,7 @@ public class ServiceTests extends VerigatorTestCase {
     @Rule
     public ExpectedException deleteMissingResource = ExpectedException.none();
     @Test
-    public void testDeleteNotFound() throws IOException, VerigatorException {
+    public void testDeleteNotFound() throws VerigatorException {
         deleteMissingResource.expect(NoSuchResourceException.class);
         String serviceId = "not-found-service";
         mockServer.
@@ -283,7 +283,7 @@ public class ServiceTests extends VerigatorTestCase {
     @Rule
     public ExpectedException deleteMissingCredentials = ExpectedException.none();
     @Test
-    public void testDeleteWrongCredentials() throws IOException, VerigatorException {
+    public void testDeleteWrongCredentials() throws VerigatorException {
         deleteMissingCredentials.expect(WrongCredentialsException.class);
         String serviceId = "some-id";
         mockServer.
