@@ -1,9 +1,7 @@
 package com.messente.verigator;
 
 import com.messente.verigator.exceptions.*;
-import com.messente.verigator.exceptions.VerigatorException;
 import com.messente.verigator.serializers.AuthenticationResponse;
-import com.messente.verigator.serializers.VerificationResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -12,13 +10,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockserver.model.HttpRequest.request;
 
-import java.util.Scanner;
-
 import static org.mockserver.model.HttpResponse.response;
 
 public class ServiceTests extends VerigatorTestCase {
-    private String testPhoneNumber = "+372555555";
-    private String username = "test@example.com";
+    private final String testPhoneNumber = "+372555555";
+    private final String username = "test@example.com";
 
     public static void main(String[] args) throws VerigatorException{
 
@@ -75,7 +71,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Rule
-    public ExpectedException listUsersNotFound = ExpectedException.none();
+    public final ExpectedException listUsersNotFound = ExpectedException.none();
     @Test
     public void testListUsersServiceNotFound() throws VerigatorException {
         listUsersNotFound.expect(NoSuchResourceException.class);
@@ -146,7 +142,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Rule
-    public ExpectedException registerUserInvalidData = ExpectedException.none();
+    public final ExpectedException registerUserInvalidData = ExpectedException.none();
     @Test
     public void testRegisterUserInvalidData() throws VerigatorException {
         registerUserInvalidData.expect(InvalidDataException.class);
@@ -194,7 +190,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Rule
-    public ExpectedException registerUserForbidden = ExpectedException.none();
+    public final ExpectedException registerUserForbidden = ExpectedException.none();
     @Test
     public void testRegisterUserForbidden() throws VerigatorException {
         registerUserForbidden.expect(ResourceForbiddenException.class);
@@ -217,7 +213,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Rule
-    public ExpectedException registerUserAlreadyExists = ExpectedException.none();
+    public final ExpectedException registerUserAlreadyExists = ExpectedException.none();
     @Test
     public void testtRegisterUserAlreadyExists() throws VerigatorException {
         registerUserAlreadyExists.expect(ResourceAlreadyExists.class);
@@ -259,7 +255,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Rule
-    public ExpectedException deleteMissingResource = ExpectedException.none();
+    public final ExpectedException deleteMissingResource = ExpectedException.none();
     @Test
     public void testDeleteNotFound() throws VerigatorException {
         deleteMissingResource.expect(NoSuchResourceException.class);
@@ -281,7 +277,7 @@ public class ServiceTests extends VerigatorTestCase {
     }
 
     @Rule
-    public ExpectedException deleteMissingCredentials = ExpectedException.none();
+    public final ExpectedException deleteMissingCredentials = ExpectedException.none();
     @Test
     public void testDeleteWrongCredentials() throws VerigatorException {
         deleteMissingCredentials.expect(WrongCredentialsException.class);

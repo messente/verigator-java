@@ -1,7 +1,6 @@
 package com.messente.verigator;
 
 import com.messente.verigator.exceptions.*;
-import com.messente.verigator.exceptions.VerigatorException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
