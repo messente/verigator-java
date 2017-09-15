@@ -1,41 +1,3 @@
-# Verigator Java SDK
-
-An easy to use wrapper for Messente's Verigator two-factor authentication API.
-
-
-## Installation
-
-Verigator SDK can be easily integrated with your existing Gradle or Maven build system.
-
-### Maven
-
-Add the following dependency to your your `pox.xml` file in the `dependencies` section:
-
-```xml
-<dependency>
-    <groupId>com.messente.verigator</groupId>
-    <artifactId>verigator-java</artifactId>
-    <version>1.0</version>
-    <type>pom</type>
-</dependency>
-```
-
-### Gradle
-
-Add the following dependency to your `build.gradle` file in the `dependencies` block:
-
-
-```gradle
-compile 'com.messente.verigator:verigator-java:1.0'
-```
-
-
-
-## Example
-
-Here's some example code to get you started:
-
-```java
 package com.messente.verigator.examples.gradle;
 
 import com.messente.verigator.Service;
@@ -96,6 +58,4 @@ public class VerificationFlowExample {
 
 
 }
-```
 
-Sample projects [Gradle](https://github.com/messente/verigator-java/tree/master/examples/gradle) and [Maven](https://github.com/messente/verigator-java/tree/master/examples/maven) build systems are also included
