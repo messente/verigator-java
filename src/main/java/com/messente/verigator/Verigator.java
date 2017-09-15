@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.messente.verigator.exceptions.*;
 import com.messente.verigator.serializers.CreateServiceRequest;
 
-import java.io.IOException;
 
 public class Verigator {
 
@@ -33,13 +32,13 @@ public class Verigator {
         this.http = new Http(username, password, apiUrl);
     }
 
-    public Service getService(String serviceId) throws IOException, VerigatorException {
+    public Service getService(String serviceId) throws VerigatorException {
         if (Helpers.isEmpty(serviceId)) {
             throw new InvalidInvocationError("Service id is required, but not specified");
         }
         return Service.get(this, serviceId);
     }
-    public Service createService(String name, String fqdn) throws IOException, VerigatorException {
+    public Service createService(String name, String fqdn) throws VerigatorException {
         if (Helpers.isEmpty(name) || Helpers.isEmpty(fqdn)) {
             throw new InvalidInvocationError("Both fqdn and name must be provided");
         }

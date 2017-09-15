@@ -10,8 +10,6 @@ import com.messente.verigator.serializers.AuthenticationResponse;
 import com.messente.verigator.serializers.VerificationRequest;
 import com.messente.verigator.serializers.VerificationResponse;
 
-import java.io.IOException;
-
 public class User {
     public Service getService() {
         return service;
@@ -55,7 +53,7 @@ public class User {
     @SerializedName("id_in_service")
     private String username;
 
-    private AuthenticationResponse authenticate(String method) throws IOException, VerigatorException {
+    private AuthenticationResponse authenticate(String method) throws VerigatorException {
         VerigatorResponse resp = service.getHttp().performPost(
            String.format(userEndpoint, service.getServiceId(), id),
            new Gson().toJson(new AuthenticationRequest(method))
@@ -65,23 +63,23 @@ public class User {
         return authenticationResponse;
     }
 
-    public AuthenticationResponse authenticateUsingTotp() throws IOException, VerigatorException {
+    public AuthenticationResponse authenticateUsingTotp() throws VerigatorException {
         return authenticate(authenticationMethodTotp);
     }
 
-    public AuthenticationResponse authenticateUsingSMS() throws IOException, VerigatorException {
+    public AuthenticationResponse authenticateUsingSMS() throws VerigatorException {
         return authenticate(authenticationMethodSms);
     }
 
-    public VerificationResponse verifyPinSms(String authId, String token) throws IOException, VerigatorException {
+    public VerificationResponse verifyPinSms(String authId, String token) throws VerigatorException {
         return verifyPin(authId, authenticationMethodSms, token);
     }
 
-    public VerificationResponse verifyPinTotp(String token) throws IOException, VerigatorException {
+    public VerificationResponse verifyPinTotp(String token) throws VerigatorException {
         return verifyPin(null, authenticationMethodTotp, token);
     }
 
-    private VerificationResponse verifyPin(String auth_id, String method, String token) throws IOException, VerigatorException {
+    private VerificationResponse verifyPin(String auth_id, String method, String token) throws VerigatorException {
         VerigatorResponse resp = service.getHttp().performPut(
                 String.format(userEndpoint, service.getServiceId(), id),
            new Gson().toJson(new VerificationRequest(method, token, auth_id))
