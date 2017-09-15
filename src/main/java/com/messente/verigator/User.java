@@ -16,7 +16,7 @@ public class User {
     }
 
     private Service service;
-    private static final String userEndpoint = "service/service/%s/users/%s/auth";
+    private static final String AUTH_ENDPOINT = "service/service/%s/users/%s/auth";
 
     public String getCtime() {
         return ctime;
@@ -26,8 +26,8 @@ public class User {
         return username;
     }
 
-    private final String authenticationMethodTotp = "totp";
-    private final String authenticationMethodSms = "sms";
+    private final String AUTHENTICATION_METHOD_TOTP = "totp";
+    private final String AUTHENTICATION_METHOD_SMS = "sms";
 
     @Override
     public String toString() {
@@ -55,38 +55,36 @@ public class User {
 
     private AuthenticationResponse authenticate(String method) throws VerigatorException {
         VerigatorResponse resp = service.getHttp().performPost(
-           String.format(userEndpoint, service.getServiceId(), id),
+           String.format(AUTH_ENDPOINT, service.getServiceId(), id),
            new Gson().toJson(new AuthenticationRequest(method))
         );
         Helpers.validateCommon(resp,200);
-        AuthenticationResponse authenticationResponse = new Gson().fromJson(resp.getResponseBody(), AuthenticationResponse.class);
-        return authenticationResponse;
+        return new Gson().fromJson(resp.getResponseBody(), AuthenticationResponse.class);
     }
 
     public AuthenticationResponse authenticateUsingTotp() throws VerigatorException {
-        return authenticate(authenticationMethodTotp);
+        return authenticate(AUTHENTICATION_METHOD_TOTP);
     }
 
     public AuthenticationResponse authenticateUsingSMS() throws VerigatorException {
-        return authenticate(authenticationMethodSms);
+        return authenticate(AUTHENTICATION_METHOD_SMS);
     }
 
     public VerificationResponse verifyPinSms(String authId, String token) throws VerigatorException {
-        return verifyPin(authId, authenticationMethodSms, token);
+        return verifyPin(authId, AUTHENTICATION_METHOD_SMS, token);
     }
 
     public VerificationResponse verifyPinTotp(String token) throws VerigatorException {
-        return verifyPin(null, authenticationMethodTotp, token);
+        return verifyPin(null, AUTHENTICATION_METHOD_TOTP, token);
     }
 
     private VerificationResponse verifyPin(String auth_id, String method, String token) throws VerigatorException {
         VerigatorResponse resp = service.getHttp().performPut(
-                String.format(userEndpoint, service.getServiceId(), id),
+                String.format(AUTH_ENDPOINT, service.getServiceId(), id),
            new Gson().toJson(new VerificationRequest(method, token, auth_id))
         );
         Helpers.validateCommon(resp, 200);
-        VerificationResponse verificationResponse = new Gson().fromJson(resp.getResponseBody(), VerificationResponse.class);
-        return verificationResponse;
+        return new Gson().fromJson(resp.getResponseBody(), VerificationResponse.class);
     }
 
     public void setService(Service service) {

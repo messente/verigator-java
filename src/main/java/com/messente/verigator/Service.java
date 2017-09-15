@@ -17,9 +17,9 @@ public class Service {
     private String serviceId;
 
     private Verigator verigatorApi;
-    private static final String endpoint = "service/service/%s";
-    private static final String usersEndpoint = "service/service/%s/users";
-    private static final String userEndpoint = "service/service/%s/user/%s";
+    private static final String ENDPOINT = "service/service/%s";
+    private static final String USERS_ENDPOINT = "service/service/%s/users";
+    private static final String USER_ENDPOINT = "service/service/%s/user/%s";
 
     @Expose
     private String ctime;
@@ -61,7 +61,7 @@ public class Service {
 
     public static Service get(Verigator verigator, String serviceId) throws VerigatorException {
         VerigatorResponse response = verigator.getHttp().performGet(
-            String.format(Service.endpoint, serviceId)
+            String.format(Service.ENDPOINT, serviceId)
         );
         Helpers.validateCommon(response, 200);
         Service service = new Gson().fromJson(response.getResponseBody(), Service.class);
@@ -71,14 +71,14 @@ public class Service {
 
     public void delete(String serviceId) throws VerigatorException {
         VerigatorResponse response = verigatorApi.getHttp().performDelete(
-           String.format(Service.endpoint, serviceId)
+           String.format(Service.ENDPOINT, serviceId)
         );
         Helpers.validateCommon(response, 202);
     }
 
     public User getUser(String userId) throws VerigatorException {
         VerigatorResponse response = verigatorApi.getHttp().performGet(
-            String.format(Service.userEndpoint, serviceId, userId)
+            String.format(Service.USER_ENDPOINT, serviceId, userId)
         );
         Helpers.validateCommon(response, 200);
         User user = new Gson().fromJson(response.getResponseBody(), User.class);
@@ -88,7 +88,7 @@ public class Service {
 
     public User[] getUsers() throws VerigatorException {
         VerigatorResponse response = verigatorApi.getHttp().performGet(
-                String.format(Service.usersEndpoint, serviceId)
+                String.format(Service.USERS_ENDPOINT, serviceId)
         );
         Helpers.validateCommon(response, 200);
         User[] users = new Gson().fromJson(response.getResponseBody(), GetUsersResponse.class).getUsers();
@@ -100,7 +100,7 @@ public class Service {
 
     public User registerUser(String userName, String phoneNumber) throws VerigatorException {
         VerigatorResponse response = verigatorApi.getHttp().performPost(
-            String.format(Service.usersEndpoint, serviceId),
+            String.format(Service.USERS_ENDPOINT, serviceId),
             new Gson().toJson(new RegisterUserRequest(phoneNumber, userName))
         );
         Helpers.validateCommon(response, 200);

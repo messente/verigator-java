@@ -13,13 +13,13 @@ public class Verigator {
 
     private Http http;
 
-    private static final String defaultEndpoint = "https://api.dev.verigator.com";
-    private static final String defaultApiVersion = "v1";
-    private static final String serviceEndpoint = "service/service";
+    private static final String DEFAULT_ENDPOINT = "https://api.dev.verigator.com";
+    private static final String DEFAULT_API_VERSION = "v1";
+    private static final String SERVICE_ENDPOINT = "service/service";
 
 
     public Verigator(String username, String password) {
-        String apiUrl = defaultEndpoint + "/" + defaultApiVersion;
+        String apiUrl = DEFAULT_ENDPOINT + "/" + DEFAULT_API_VERSION;
         this.http = new Http(username, password, apiUrl);
     }
 
@@ -43,7 +43,7 @@ public class Verigator {
             throw new InvalidInvocationError("Both fqdn and name must be provided");
         }
         VerigatorResponse response = http.performPost(
-            serviceEndpoint, new Gson().toJson(new CreateServiceRequest(name, fqdn))
+                SERVICE_ENDPOINT, new Gson().toJson(new CreateServiceRequest(name, fqdn))
         );
         Helpers.validateCommon(response, 200);
         Service service = new Gson().fromJson(response.getResponseBody(), Service.class);

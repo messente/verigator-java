@@ -3,6 +3,8 @@ package com.messente.verigator;
 
 import com.messente.verigator.exceptions.VerigatorException;
 import com.messente.verigator.exceptions.VerigatorInternalError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -12,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Http {
+    private static final Logger log = LoggerFactory.getLogger(Http.class);
+
     private String username;
     private String password;
     private String baseUrl;
@@ -46,8 +50,8 @@ public class Http {
 
     public VerigatorResponse performRequest(String endpoint, String requestMethod, String data, HashMap<String, String> headers) throws VerigatorException {
         HttpURLConnection con = null;
-        StringBuffer content = new StringBuffer();
-        int status = -1;
+        StringBuilder content = new StringBuilder();
+        int status;
 
         try {
             URL url = new URL(baseUrl + "/" + endpoint);
@@ -56,10 +60,9 @@ public class Http {
             } else {
                 con = (HttpURLConnection) url.openConnection();
             }
-            System.out.println("The url is " + url);
-            System.out.println("The url is " + url.getPath());
+            log.debug("Performing request " + requestMethod + "-> " + url.getPath());
             con.setDoOutput(true);
-            System.out.println(requestMethod);
+            log.debug(requestMethod);
             con.setRequestMethod(requestMethod);
             con.setRequestProperty("X-Service-Auth", username + ":" + password);
             if (headers != null) {
@@ -70,12 +73,11 @@ public class Http {
 
             if (data != null) {
                 OutputStream output = con.getOutputStream();
-                System.out.println("Sending data: " + data.toString());
+                log.debug("Sending data: " + data);
                 output.write(data.getBytes("UTF-8"));
             }
             BufferedReader in;
             status = con.getResponseCode();
-            System.out.println("The status is " + status);
             InputStream is;
             if (status >= 200 && status < 400) {
                 is = con.getInputStream();
@@ -92,9 +94,11 @@ public class Http {
                 }
                 in.close();
             }
-            System.out.println("Received response: " + content.toString());
+            log.debug("got HTTP status: " + status);
+            log.debug("Received response: " + content.toString());
             con.disconnect();
         } catch (Exception ex) {
+            log.error("A unexpected connection error occurred: " + ex.getStackTrace());
             throw new VerigatorInternalError(ex.getMessage());
 
         } finally {
