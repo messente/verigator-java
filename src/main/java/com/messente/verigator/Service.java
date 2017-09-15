@@ -60,9 +60,8 @@ public class Service {
     }
 
     public static Service get(Verigator verigator, String serviceId) throws VerigatorException {
-        VerigatorResponse response = verigator.getHttp().performRequest(
-            String.format(Service.endpoint, serviceId), "GET",
-            null, null
+        VerigatorResponse response = verigator.getHttp().performGet(
+            String.format(Service.endpoint, serviceId)
         );
         Helpers.validateCommon(response, 200);
         Service service = new Gson().fromJson(response.getResponseBody(), Service.class);

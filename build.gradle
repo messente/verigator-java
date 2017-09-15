@@ -1,15 +1,42 @@
-group 'com.messente'
-version '1.0-SNAPSHOT'
+buildscript {
+    repositories() {
+        jcenter()
+    }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: 'maven'
+
+group 'com.messente.verigator'
+version '1.0'
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+
+    configurations = ['archives']
+
+    pkg {
+        repo = 'verigator'
+        name = 'com.messente.verigator'
+        userOrg = "messente"
+        version {
+            name = '1-0-beta'
+        }
+    }
 }
 
+repositories {
+    jcenter()
+}
 
 dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
@@ -25,3 +52,36 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
+
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            pom {
+//                project {
+//                    groupId 'com.messente'
+//                    artifactId 'verigator'
+//                    version '1.0.0'
+//
+//                    name 'verigator-java'
+//                    description 'This SDK contains everything required to add Verigator two-factor authentication for your service'
+//                    url 'https://github.com/messente/verigator-java'
+//
+//                    organization{
+//                        name 'Messente Communications Ltd.'
+//                        url 'https://messente.com'
+//                    }
+//
+//                    inceptionYear '2017'
+//                    licenses {
+//                        license {
+//                            name 'The Apache Software License, Version 2.0'
+//                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                            distribution 'repo'
+//                        }
+//                    }
+//                }
+//         }
+//         repository(url: "file://localhost/tmp/myRepo/")
+//        }
+//    }
+//}
