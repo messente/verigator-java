@@ -9,7 +9,7 @@ Verigator SDK can be easily integrated with your existing Gradle or Maven build 
 
 ### Maven
 
-Add the following dependency to your your `pox.xml` file in the `dependencies` section:
+Add the following dependency to your `pox.xml` file in the `dependencies` section:
 
 ```xml
 <dependency>
@@ -98,4 +98,4 @@ public class VerificationFlowExample {
 }
 ```
 
-Sample projects [Gradle](https://github.com/messente/verigator-java/tree/master/examples/gradle) and [Maven](https://github.com/messente/verigator-java/tree/master/examples/maven) build systems are also included
+Sample projects for [Gradle](https://github.com/messente/verigator-java/tree/master/examples/gradle) and [Maven](https://github.com/messente/verigator-java/tree/master/examples/maven) build systems are also included.
