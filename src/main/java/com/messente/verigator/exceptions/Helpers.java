@@ -8,19 +8,20 @@ public class Helpers {
         if (statusCode == expectedStatus) {
             return;
         } else if (statusCode == 404) {
-            throw new NoSuchResourceException();
+            throw new NoSuchResourceException(verigatorResponse.getResponseBody());
         } else if (statusCode == 401) {
-            throw new WrongCredentialsException();
+            throw new WrongCredentialsException(verigatorResponse.getResponseBody());
         } else if (statusCode == 403) {
-            throw new ResourceForbiddenException();
-        } else if (statusCode == 422) {
-            throw new InvalidDataException();
+            throw new ResourceForbiddenException(verigatorResponse.getResponseBody());
+        } else if (statusCode == 422 || statusCode == 400) {
+            throw new InvalidDataException(verigatorResponse.getResponseBody());
         } else if (statusCode == 409) {
-            throw new ResourceAlreadyExists();
+            throw new ResourceAlreadyExists(verigatorResponse.getResponseBody());
         } else {
-           throw new VerigatorInternalError();
+           throw new VerigatorInternalError(verigatorResponse.getResponseBody());
         }
     }
+
     public static boolean isEmpty(String input) {
         return input == null || input.isEmpty();
     }

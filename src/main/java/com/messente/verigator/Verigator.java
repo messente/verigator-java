@@ -13,7 +13,7 @@ public class Verigator {
 
     private Http http;
 
-    private static final String DEFAULT_ENDPOINT = "https://api.dev.verigator.com";
+    private static final String DEFAULT_ENDPOINT = "https://api.verigator.com";
     private static final String DEFAULT_API_VERSION = "v1";
     private static final String SERVICE_ENDPOINT = "service/service";
 
