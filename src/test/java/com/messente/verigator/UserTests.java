@@ -18,7 +18,6 @@ public class UserTests extends VerigatorTestCase {
     private final String testServiceId = "serviceId";
     private final String testUserId = "userId";
     private final String mockPin = "1111";
-    private final String mockAuthId = "mock-auth-id";
 
     @Test
     public void testAuthSMSSuccess() throws VerigatorException {
@@ -33,14 +32,13 @@ public class UserTests extends VerigatorTestCase {
                                 withHeaders(getExpectAuthHeader())
                 )
                 .respond(
-                        response("{\"method\": \"sms\", \"auth_id\": \"sms-auth-id\"}").
+                        response("{\"method\": \"sms\"}").
                                 withStatusCode(200)
 
                 );
 
         AuthenticationResponse authenticationResponse = user.authenticateUsingSMS();
         assertEquals(authenticationResponse.getMethod(), "sms");
-        assertEquals(authenticationResponse.getAuthId(), "sms-auth-id");
     }
 
     @Test
@@ -65,7 +63,6 @@ public class UserTests extends VerigatorTestCase {
 
         AuthenticationResponse authenticationResponse = user.authenticateUsingSMS();
         assertEquals(authenticationResponse.getMethod(), "totp");
-        assertEquals(authenticationResponse.getAuthId(), null);
     }
 
     @Rule
@@ -127,9 +124,8 @@ public class UserTests extends VerigatorTestCase {
                 );
         Service service = new Service(testServiceId, getVerigatorTestClient());
         User user = new User(service, testUserId);
-        VerificationResponse verificationResponse = user.verifyPinTotp(mockPin);
+        VerificationResponse verificationResponse = user.verifyPin(mockPin);
         assertEquals(verificationResponse.isVerified(), true);
-        assertEquals(verificationResponse.getMethod(), "totp");
     }
 
     @Test
@@ -149,9 +145,8 @@ public class UserTests extends VerigatorTestCase {
                 );
         Service service = new Service(testServiceId, getVerigatorTestClient());
         User user = new User(service, testUserId);
-        VerificationResponse verificationResponse = user.verifyPinTotp(mockPin);
+        VerificationResponse verificationResponse = user.verifyPin(mockPin);
         assertEquals(verificationResponse.isVerified(), false);
-        assertEquals(verificationResponse.getMethod(), "totp");
     }
 
     @Rule
@@ -172,6 +167,6 @@ public class UserTests extends VerigatorTestCase {
                 );
         Service service = new Service(testServiceId, getVerigatorTestClient());
         User user = new User(service, testUserId);
-        user.verifyPinTotp(mockPin);
+        user.verifyPin(mockPin);
     }
 }
