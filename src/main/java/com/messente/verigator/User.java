@@ -26,8 +26,8 @@ public class User {
         return username;
     }
 
-    private final String AUTHENTICATION_METHOD_TOTP = "totp";
-    private final String AUTHENTICATION_METHOD_SMS = "sms";
+    public final String AUTHENTICATION_METHOD_TOTP = "totp";
+    public final String AUTHENTICATION_METHOD_SMS = "sms";
 
     @Override
     public String toString() {
@@ -70,18 +70,10 @@ public class User {
         return authenticate(AUTHENTICATION_METHOD_SMS);
     }
 
-    public VerificationResponse verifyPinSms(String authId, String token) throws VerigatorException {
-        return verifyPin(authId, AUTHENTICATION_METHOD_SMS, token);
-    }
-
-    public VerificationResponse verifyPinTotp(String token) throws VerigatorException {
-        return verifyPin(null, AUTHENTICATION_METHOD_TOTP, token);
-    }
-
-    private VerificationResponse verifyPin(String auth_id, String method, String token) throws VerigatorException {
+    public VerificationResponse verifyPin(String token) throws VerigatorException {
         VerigatorResponse resp = service.getHttp().performPut(
                 String.format(AUTH_ENDPOINT, service.getServiceId(), id),
-           new Gson().toJson(new VerificationRequest(method, token, auth_id))
+           new Gson().toJson(new VerificationRequest(token))
         );
         Helpers.validateCommon(resp, 200);
         return new Gson().fromJson(resp.getResponseBody(), VerificationResponse.class);
