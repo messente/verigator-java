@@ -8,8 +8,23 @@ An easy to use wrapper for Messente's Verigator two-factor authentication API.
 Verigator SDK can be easily integrated with your existing Gradle or Maven build system.
 
 ### Maven
+Add the following Bintray Verigator repository definition to your `pom.xml` within the root node:
+```xml
+<repositories>
+    <repository>
+        <id>bintray</id>
+        <url>http://dl.bintray.com/messente/verigator</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+```
 
-Add the following dependency to your `pox.xml` file in the `dependencies` section:
+and insert the following dependency to your `pox.xml` file in the `dependencies` section:
 
 ```xml
 <dependency>
@@ -22,9 +37,13 @@ Add the following dependency to your `pox.xml` file in the `dependencies` sectio
 
 ### Gradle
 
-Add the following dependency to your `build.gradle` file in the `dependencies` block:
 
+Add the Verigator Bintray repository to your dependencies:
+```
+    maven { url "https://dl.bintray.com/messente/verigator" }
+```
 
+and add the following dependency to your `build.gradle` file in the `dependencies` block:
 ```gradle
 compile 'com.messente.verigator:verigator-java:1.0'
 ```
@@ -71,11 +90,10 @@ public class VerificationFlowExample {
         User user = service.registerUser("youremail@example.com", "+3725555555");
 
         // You can use SMS or TOTP (verification via Verigator app)
-        AuthenticationResponse authenticationResponse = null;
         if (USE_SMS) {
-            authenticationResponse = user.authenticateUsingSMS();
+            user.authenticateUsingSMS();
         } else {
-            authenticationResponse = user.authenticateUsingTotp();
+            user.authenticateUsingTotp();
         }
 
         Scanner reader = new Scanner(System.in);
@@ -84,11 +102,7 @@ public class VerificationFlowExample {
         while (verificationResponse == null || !verificationResponse.isVerified()){
             System.out.println("Enter the PIN: ");
             String pin = reader.nextLine();
-            if (USE_SMS) {
-                verificationResponse = user.verifyPinSms(authenticationResponse.getAuthId(), pin);
-            } else {
-                verificationResponse = user.verifyPinTotp(pin);
-            }
+            verificationResponse = user.verifyPinSms(pin);
         }
         System.out.println("Verification successful!");
 

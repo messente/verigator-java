@@ -33,11 +33,10 @@ public class VerificationFlowExample {
         User user = service.registerUser("youremail@example.com", "+3725555555");
 
         // You can use SMS or TOTP (verification via Verigator app)
-        AuthenticationResponse authenticationResponse = null;
         if (USE_SMS) {
-            authenticationResponse = user.authenticateUsingSMS();
+            user.authenticateUsingSMS();
         } else {
-            authenticationResponse = user.authenticateUsingTotp();
+            user.authenticateUsingTotp();
         }
 
         Scanner reader = new Scanner(System.in);
@@ -46,11 +45,7 @@ public class VerificationFlowExample {
         while (verificationResponse == null || !verificationResponse.isVerified()){
             System.out.println("Enter the PIN: ");
             String pin = reader.nextLine();
-            if (USE_SMS) {
-                verificationResponse = user.verifyPinSms(authenticationResponse.getAuthId(), pin);
-            } else {
-                verificationResponse = user.verifyPinTotp(pin);
-            }
+            verificationResponse = user.verifyPin(pin);
         }
         System.out.println("Verification successful!");
 
