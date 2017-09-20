@@ -2,6 +2,9 @@
 
 An easy to use wrapper for Messente's Verigator two-factor authentication API.
 
+## Documentation
+
+Javadoc for the library  can be found [here](https://messente.com/documentation/verification-api)
 
 ## Installation
 
@@ -40,7 +43,7 @@ and insert the following dependency to your `pox.xml` file in the `dependencies`
 
 Add the Verigator Bintray repository to your dependencies:
 ```
-    maven { url "https://dl.bintray.com/messente/verigator" }
+maven { url "https://dl.bintray.com/messente/verigator" }
 ```
 
 and add the following dependency to your `build.gradle` file in the `dependencies` block:
