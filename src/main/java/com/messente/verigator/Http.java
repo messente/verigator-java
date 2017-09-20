@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Http {
+class Http {
     private static final Logger log = LoggerFactory.getLogger(Http.class);
 
     private String username;

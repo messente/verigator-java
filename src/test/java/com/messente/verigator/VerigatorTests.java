@@ -21,9 +21,6 @@ public class VerigatorTests extends VerigatorTestCase {
                                 withMethod("POST")
                                 .withPath("/v1/service/service")
                                 .withHeaders(getExpectAuthHeader())
-//                    .withBody(
-//                        String.format("{\"name\":\"%s\":\"fqdn\":\"%s\"}", serviceName, fqdn)
-//                    )
                 )
                 .respond(
                         response().

@@ -1,7 +1,6 @@
 package com.messente.verigator;
 
 import com.messente.verigator.exceptions.*;
-import com.messente.verigator.serializers.AuthenticationResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -15,26 +14,6 @@ import static org.mockserver.model.HttpResponse.response;
 public class ServiceTests extends VerigatorTestCase {
     private final String testPhoneNumber = "+372555555";
     private final String username = "test@example.com";
-
-    public static void main(String[] args) throws VerigatorException{
-
-
-        Verigator verigator = new Verigator("api_user_1", "api_pass_1");
-        Service service = verigator.createService("Some service 20w0", "www.example.com");
-        User user = service.registerUser("ukuloskit@gmail.com", "+37253448365");
-//        for (User serviceUser: service.getUsers()) {
-//            System.out.println(serviceUser);
-//        }
-        AuthenticationResponse authenticationResponse = user.authenticateUsingSMS();
-
-//        Scanner reader = new Scanner(System.in);  // Reading from System.in
-//        System.out.println("Enter the PIN: ");
-//        String pin = reader.nextLine(); // Scans the next token of the input as an int.
-//        VerificationResponse verificationResponse = user.verifyPinSms(authenticationResponse.getAuthId(), pin);
-//        System.out.println(verificationResponse);
-
-
-    }
 
     @Test
     public void testListUsersSuccess() throws VerigatorException {
