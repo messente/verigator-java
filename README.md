@@ -102,7 +102,7 @@ public class VerificationFlowExample {
         while (verificationResponse == null || !verificationResponse.isVerified()){
             System.out.println("Enter the PIN: ");
             String pin = reader.nextLine();
-            verificationResponse = user.verifyPinSms(pin);
+            verificationResponse = user.verifyPin(pin);
         }
         System.out.println("Verification successful!");
 
