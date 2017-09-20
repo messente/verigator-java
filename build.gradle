@@ -12,6 +12,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group 'com.messente.verigator'
 version '1.0'
@@ -29,7 +30,7 @@ bintray {
         name = 'com.messente.verigator'
         userOrg = "messente"
         version {
-            name = '1.0'
+            name = version
         }
     }
 }
@@ -50,6 +51,33 @@ jacocoTestReport {
     reports {
         xml.enabled false
         html.enabled true
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact sourcesJar
+            artifact javadocJar
+            from components.java
+            groupId 'com.messente.verigator'
+            artifactId 'verigator-java'
+            version version
+        }
     }
 }
 
