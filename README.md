@@ -1,4 +1,5 @@
 # Verigator Java SDK
+[![Build Status](https://travis-ci.org/messente/verigator-java.svg?branch=master)](https://travis-ci.org/messente/verigator-java)
 
 An easy to use wrapper for Messente's Verigator two-factor authentication API.
 
