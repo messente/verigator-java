@@ -35,7 +35,6 @@ and insert the following dependency to your `pox.xml` file in the `dependencies`
     <groupId>com.messente.verigator</groupId>
     <artifactId>verigator-java</artifactId>
     <version>1.0</version>
-    <type>pom</type>
 </dependency>
 ```
 
