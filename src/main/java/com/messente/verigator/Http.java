@@ -65,6 +65,8 @@ class Http {
             log.debug(requestMethod);
             con.setRequestMethod(requestMethod);
             con.setRequestProperty("X-Service-Auth", username + ":" + password);
+            con.setRequestProperty("Accept", "application/json");
+            con.setRequestProperty("User-Agent", "verigator-java-" + BuildVersion.getBuildVersion());
             if (headers != null) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
                     con.setRequestProperty(entry.getKey(), entry.getValue());

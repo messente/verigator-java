@@ -25,7 +25,6 @@ public class User {
 
     /**
      * Returns the UNIX time indicating when the user was created
-     * @return
      */
     public String getCtime() {
         return ctime;
@@ -33,7 +32,6 @@ public class User {
 
     /**
      * Returns the username of the Verigator
-     * @return
      */
     public String getUsername() {
         return username;

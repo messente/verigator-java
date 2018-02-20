@@ -1,3 +1,4 @@
+
 package com.messente.verigator;
 
 import com.messente.verigator.exceptions.*;
@@ -20,7 +21,7 @@ public class VerigatorTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST")
                                 .withPath("/v1/service/service")
-                                .withHeaders(getExpectAuthHeader())
+                                .withHeaders(getAuthHeader(), getAcceptHeader(), getUserAgentHeader())
                 )
                 .respond(
                         response().
@@ -46,13 +47,12 @@ public class VerigatorTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST")
                                 .withPath("/v1/service/service")
-                                .withHeaders(getExpectAuthHeader())
+                                .withHeaders(getAuthHeader())
                 )
                 .respond(
                         response().
                                 withStatusCode(409).
-                                withHeaders(jsonHeader).
-                                withBody("wew")
+                                withHeaders(jsonHeader)
 
                 );
         Verigator verigator = getVerigatorTestClient();
@@ -68,7 +68,7 @@ public class VerigatorTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST")
                                 .withPath("/v1/service/service")
-                                .withHeaders(getExpectAuthHeader("wrong_user", "wrong_pass"))
+                                .withHeaders(getAuthHeader("wrong_user", "wrong_pass"))
                 )
                 .respond(
                         response().
@@ -89,7 +89,7 @@ public class VerigatorTests extends VerigatorTestCase {
                         request().
                                 withMethod("GET").
                                 withPath("/v1/service/service/" + wrongServiceId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getAuthHeader())
                 )
                 .respond(
                         response().
@@ -110,7 +110,7 @@ public class VerigatorTests extends VerigatorTestCase {
                         request().
                                 withMethod("GET").
                                 withPath("/v1/service/service/" + forbiddenServiceId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getAuthHeader())
                 )
                 .respond(
                         response().
@@ -130,7 +130,7 @@ public class VerigatorTests extends VerigatorTestCase {
                         request().
                                 withMethod("GET").
                                 withPath("/v1/service/service/" + successId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getAuthHeader())
                 )
                 .respond(
                         response(

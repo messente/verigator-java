@@ -30,7 +30,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("{\"method\": \"sms\"}").
@@ -54,7 +54,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("{\"method\": \"totp\", \"auth_id\": null}").
@@ -80,7 +80,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response().
@@ -99,7 +99,7 @@ public class UserTests extends VerigatorTestCase {
                     request().
                         withMethod("POST").
                         withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
-                        withHeaders(getExpectAuthHeader())
+                        withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("").
@@ -117,7 +117,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("PUT").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("{\"method\": \"totp\", \"verified\": true}").
@@ -138,7 +138,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("PUT").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("{\"method\": \"totp\", \"verified\": false}").
@@ -160,7 +160,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("PUT").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId + "/auth").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("").
@@ -181,7 +181,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("DELETE").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("").
@@ -199,7 +199,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("DELETE").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("").
@@ -221,7 +221,7 @@ public class UserTests extends VerigatorTestCase {
                         request().
                                 withMethod("DELETE").
                                 withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("").
