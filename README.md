@@ -35,14 +35,13 @@ and insert the following dependency to your `pox.xml` file in the `dependencies`
     <groupId>com.messente.verigator</groupId>
     <artifactId>verigator-java</artifactId>
     <version>1.0</version>
-    <type>pom</type>
 </dependency>
 ```
 
 ### Gradle
 
 
-Add the Verigator Bintray repository to your dependencies:
+Add the Verigator Bintray repository in the `repositories` block:
 ```
 maven { url "https://dl.bintray.com/messente/verigator" }
 ```
