@@ -9,6 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+
 import static org.mockserver.model.HttpRequest.request;
 
 import static org.junit.Assert.assertEquals;
@@ -168,5 +169,66 @@ public class UserTests extends VerigatorTestCase {
         Service service = new Service(testServiceId, getVerigatorTestClient());
         User user = new User(service, testUserId);
         user.verifyPin(mockPin);
+    }
+
+    @Rule
+    public ExpectedException testDeleteForbidden = ExpectedException.none();
+    @Test
+    public void testDeleteForbidden() throws VerigatorException {
+        testDeleteForbidden.expect(ResourceForbiddenException.class);
+        mockServer.
+                when(
+                        request().
+                                withMethod("DELETE").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId).
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("").
+                                withStatusCode(403)
+                );
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+        user.delete();
+    }
+
+    @Test
+    public void testDeleteSuccess() throws VerigatorException {
+        mockServer.
+                when(
+                        request().
+                                withMethod("DELETE").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId).
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("").
+                                withStatusCode(202)
+                );
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+        user.delete();
+    }
+
+    @Rule
+    public ExpectedException deleteNotFound = ExpectedException.none();
+
+    @Test
+    public void testDeleteNotFound() throws VerigatorException {
+        deleteNotFound.expect(NoSuchResourceException.class);
+        mockServer.
+                when(
+                        request().
+                                withMethod("DELETE").
+                                withPath("/v1/service/service/" + testServiceId + "/users/" + testUserId).
+                                withHeaders(getExpectAuthHeader())
+                )
+                .respond(
+                        response("").
+                                withStatusCode(404)
+                );
+        Service service = new Service(testServiceId, getVerigatorTestClient());
+        User user = new User(service, testUserId);
+        user.delete();
     }
 }
