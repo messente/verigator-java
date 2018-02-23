@@ -34,7 +34,7 @@ and insert the following dependency to your `pox.xml` file in the `dependencies`
 <dependency>
     <groupId>com.messente.verigator</groupId>
     <artifactId>verigator-java</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
@@ -48,7 +48,7 @@ maven { url "https://dl.bintray.com/messente/verigator" }
 
 and add the following dependency to your `build.gradle` file in the `dependencies` block:
 ```gradle
-compile 'com.messente.verigator:verigator-java:1.0'
+compile 'com.messente.verigator:verigator-java:1.1'
 ```
 
 

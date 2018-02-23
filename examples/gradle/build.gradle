@@ -7,10 +7,9 @@ sourceCompatibility = 1.8
 
 repositories {
     jcenter()
-    maven { url "https://dl.bintray.com/messente/verigator" }
 }
 
 dependencies {
-    compile 'com.messente.verigator:verigator-java:1.0'
+    compile 'com.messente.verigator:verigator-java:1.1'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

@@ -13,7 +13,7 @@
         <dependency>
             <groupId>com.messente.verigator</groupId>
             <artifactId>verigator-java</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 
