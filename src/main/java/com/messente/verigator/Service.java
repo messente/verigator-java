@@ -49,7 +49,6 @@ public class Service {
 
     /**
      * Return the UNIX timestamp indicating when the service was created
-     * @return
      */
     public String getCtime() {
         return ctime;
@@ -57,7 +56,6 @@ public class Service {
 
     /**
      * Return the name of the service in Verigator
-     * @return
      */
     public String getName() {
         return name;

@@ -30,12 +30,24 @@ public class VerigatorTestCase {
         proxy = startClientAndProxy(1090);
     }
 
-    protected Header getExpectAuthHeader() {
-        return getExpectAuthHeader(testUser, testPassword);
+    protected Header getAuthHeader() {
+        return getAuthHeader(testUser, testPassword);
     }
 
-    protected Header getExpectAuthHeader(String useername, String password) {
-        return new Header("X-Service-Auth", useername+ ":" + password);
+    protected Header getAcceptHeader() {
+        return new Header("Accept", "application/json");
+    }
+
+    protected Header getUserAgentHeader() {
+        return new Header("User-Agent", "verigator-java-" + BuildVersion.getBuildVersion());
+    }
+
+    protected Header getAuthHeader(String username, String password) {
+        return new Header("X-Service-Auth", username+ ":" + password);
+    }
+
+    protected Header[] getCommonHeaders() {
+        return new Header[] { getAcceptHeader(), getAuthHeader(), getUserAgentHeader()};
     }
 
     @After

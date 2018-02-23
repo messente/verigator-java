@@ -24,7 +24,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("GET").
                                 withPath("/v1/service/service/" + successId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response(
@@ -60,7 +60,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("GET").
                                 withPath("/v1/service/service/" + wrongId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response().
@@ -81,7 +81,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("GET").
                                 withPath("/v1/service/service/" + successId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("{\"total\": 0, \"users\": []}").
@@ -104,7 +104,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST").
                                 withPath("/v1/service/service/" + successId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("{\"ctime\": \"fake-ctime-1\", id:\"mock-id-1\", \"id_in_service\": \"fake-id-in-service-1\"}"
@@ -132,7 +132,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST").
                                 withPath("/v1/service/service/" + successId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("").
@@ -156,7 +156,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("GET").
                                 withPath("/v1/service/service/" + successId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response("{\"total\": 0, \"users\": []}").
@@ -179,7 +179,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST").
                                 withPath("/v1/service/service/" + serviceId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response().
@@ -202,7 +202,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("POST").
                                 withPath("/v1/service/service/" + serviceId + "/users").
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response().
@@ -222,7 +222,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("DELETE").
                                 withPath("/v1/service/service/" + successId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response().
@@ -244,7 +244,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("DELETE").
                                 withPath("/v1/service/service/" + serviceId).
-                                withHeaders(getExpectAuthHeader())
+                                withHeaders(getCommonHeaders())
                 )
                 .respond(
                         response().
@@ -266,7 +266,7 @@ public class ServiceTests extends VerigatorTestCase {
                         request().
                                 withMethod("DELETE").
                                 withPath("/v1/service/service/" + serviceId).
-                                withHeaders(getExpectAuthHeader("wrong-user", "wrong-pass"))
+                                withHeaders(getAuthHeader("wrong-user", "wrong-pass"))
                 )
                 .respond(
                         response().

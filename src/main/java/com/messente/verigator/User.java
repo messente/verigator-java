@@ -5,10 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.messente.verigator.exceptions.Helpers;
 import com.messente.verigator.exceptions.*;
-import com.messente.verigator.serializers.AuthenticationRequest;
-import com.messente.verigator.serializers.AuthenticationResponse;
-import com.messente.verigator.serializers.VerificationRequest;
-import com.messente.verigator.serializers.VerificationResponse;
+import com.messente.verigator.serializers.*;
 
 /**
  * Represents a User in Verigator API
@@ -24,10 +21,10 @@ public class User {
 
     private Service service;
     private static final String AUTH_ENDPOINT = "service/service/%s/users/%s/auth";
+    private static final String USERS_ENDPOINT = "service/service/%s/users/%s";
 
     /**
      * Returns the UNIX time indicating when the user was created
-     * @return
      */
     public String getCtime() {
         return ctime;
@@ -35,7 +32,6 @@ public class User {
 
     /**
      * Returns the username of the Verigator
-     * @return
      */
     public String getUsername() {
         return username;
@@ -128,6 +124,19 @@ public class User {
         );
         Helpers.validateCommon(resp, 200);
         return new Gson().fromJson(resp.getResponseBody(), VerificationResponse.class);
+    }
+    /**
+     * Deletes given user from service
+     * @throws ResourceForbiddenException if you do not have access to the specified service
+     * @throws WrongCredentialsException if you have specified the incorrect credentials
+     * @throws VerigatorInternalError if a server-side error occurs
+     * @throws VerigatorException if there is a connection error
+     */
+    public void delete() throws VerigatorException {
+        VerigatorResponse resp = service.getHttp().performDelete(
+            String.format(USERS_ENDPOINT, service.getServiceId(), id)
+        );
+        Helpers.validateCommon(resp, 202);
     }
 
     public void setService(Service service) {
